@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Supabase + GitHub Pages 数据共享</title>
+  <!-- 引入 Supabase JS 库 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // 初始化 Supabase
+    const supabaseUrl = 'YOUR_SUPABASE_URL';
+    const supabaseKey = 'YOUR_SUPABASE_KEY';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // 示例：从数据库读取数据
+    async function fetchData() {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*');
+      console.log("数据：", data);
+    }
+
+    // 示例：写入数据
+    async function sendMessage() {
+      const message = prompt("输入要共享的消息：");
+      const { data, error } = await supabase
+        .from('messages')
+        .insert([{ text: message }]);
+      if (!error) alert("消息已发送！");
+    }
+  </script>
+</head>
+<body>
+  <h1>Supabase 数据共享演示</h1>
+  <button onclick="fetchData()">加载数据</button>
+  <button onclick="sendMessage()">发送消息</button>
+  <div id="messages"></div>
+</body>
+</html>
